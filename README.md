@@ -65,3 +65,9 @@ man 03 puts
 
 
 ## Lesson 2
+
+Per chiedere al compilatore di mostrare warning eplicitamente posso fare 
+
+```bash
+cc -02 -W -wall hello world.c
+```
