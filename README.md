@@ -120,3 +120,25 @@ posso visualizzare la tabella ASCII con:
 ```bash
 man ascii
 ```
+
+## Lesson 9
+In questa lezione iniziamo i puntatori
+
+un esempio di puntatore a intero 
+
+```bash
+int x = 5;
+int *p = &x
+```
+
+in questo modo metto l'indirizzo assegnato alla variabile x dentro il puntatore p
+
+se faccio una funzione del tipo 
+
+```bash
+void func(int *p) {
+  *p = *p + 1;
+}
+```
+
+praticamente sto passando l'argomento come puntatore e ne sto modicando il contenuto, ovviamente l'indirizzo puntato sarà sempre lo stesso.
