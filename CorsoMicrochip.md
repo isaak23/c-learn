@@ -45,6 +45,72 @@
 
 ## Operatori logici
 
+```bash
+&& AND
+|| OR
+! NOT
+```
+
+## Operazioni bit a bit
+
+Immaginiamo di avere il seguente codice
 
 ```bash
+char x = 0b00001011;
+char y = 0b00000101;
+char answer;
+
+void main(void) {
+  answer = x & y ; // AND 0b00000001
+  answer = x | y ; // OR 0b00001111
+  answer = x ^ y ; // XOR 0b00001110
+  answer = ~ y ; // NOT 0b11111010
+}
 ```
+
+in embedded spesso si usa la maschera, ovvero una variabile che magari ha solo l'ultimo bit a 1 e se io faccio una & con un'altra variabile ottengo che non modificherò solo l'ultimo bit
+
+```bash
+char x = 0b00001011;
+char mask = 0b00000001;
+
+void main(void) {
+  answer = x & mask ; // AND 0b00000001
+}
+```
+questo mi torna comodo nel caso volessi controllare solo un particolare bit di un registro.
+
+## Shift
+sono gli operatori >> e << facciamo qualche esempio
+
+```bash
+char x = 0b00001011;
+char y ;
+
+void main(void) {
+  y = x << 1; // 0b00010110 scorro tutta la sequenza verso sinistra, da un punto di vista matematico ho moltiplicato per 2 (0b00001011 = 0d11 mentre 0b00010110 = 0d22 )
+}
+```
+va da se che lo shift destro divide per 2.
+
+Attenzione allo shift destro perché i numeri con segno potrebbero venire influenzati dallo spostamento.
+
+## Casting
+Nel mondo embedded il casting è importante perché non abbiamo molto spazio, quindi fa comodo imporre i tipi di variabili che vogliamo
+
+```bash
+newType = (type)variable;
+```
+
+## Switch Statement
+
+switch (expression) {
+  const-expr1: statement1
+  break;
+  .
+  .
+  .
+  const-exprN: statementN
+  break;
+  default: statementN+1
+}
