@@ -104,6 +104,7 @@ newType = (type)variable;
 
 ## Switch Statement
 
+```bash
 switch (expression) {
   const-expr1: statement1
   break;
@@ -114,3 +115,4 @@ switch (expression) {
   break;
   default: statementN+1
 }
+```
