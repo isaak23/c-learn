@@ -142,3 +142,33 @@ void func(int *p) {
 ```
 
 praticamente sto passando l'argomento come puntatore e ne sto modicando il contenuto, ovviamente l'indirizzo puntato sarà sempre lo stesso.
+Potrei anche passare alla funzione direttamennte &x anzichè creare il puntatore e poi assegnargli il valore dell'indirizzo di x,
+
+Esempio:
+
+```bash
+int x = 5;
+
+void func(int *p) {
+  *p = *p + 1;
+}
+
+int main(void) {
+ func(&x);
+ return 0;
+}
+```
+Alla fine se ci pensi hai solo saltato un passaggio ma il risultato è lo stesso.
+
+posso scrivere un puntatore sia come
+p[0] che *p, non cambia nulla
+
+Ogni puntatore è un numero di lunghezza pari al bus indirizzi del processore.
+
+In C ogni array è già un puntatore, il nome dell'array è un puntatore a quella struttura, infatti se io faccio:
+```bash
+char mystr[] = "Hello world";
+char *p = mystr;
+```
+Si vede che non ho usato &mystr per associare l'indirizzo al puntatore, questo perché mystr è già un puntatore.
+Ricordiamo che un puntatore punta solo al primo elemento, nel caso della stringa posso accedere ai vari elementi trattando il puntatore come un array, alla fine di ogni array ricordiamo che c'è sempre uno 0 che indica la fine della stringa
