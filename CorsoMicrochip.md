@@ -116,3 +116,26 @@ switch (expression) {
   default: statementN+1
 }
 ```
+
+## Classi di variabili
+Ci sono 4 classi di variabili
+- static
+- automatic
+- external
+- register
+
+# 1. Static
+le variabili statiche sono 
+- permanenti
+- lifetime infinito
+per le global non c'è bisogno di dichiararlo esplicitamente mentre dentro una funzione devo dichiararlo esplicitamente come
+
+```bash
+static int x = 5;
+```
+
+# 2.Automatic
+Sono le variabili dentro una funzione, e hanno una vita limitata all'uso della funzione
+
+# 3.External
+
