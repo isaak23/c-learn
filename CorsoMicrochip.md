@@ -124,7 +124,7 @@ Ci sono 4 classi di variabili
 - external
 - register
 
-# 1. Static
+### 1. Static
 le variabili statiche sono 
 - permanenti
 - lifetime infinito
@@ -134,8 +134,8 @@ per le global non c'è bisogno di dichiararlo esplicitamente mentre dentro una f
 static int x = 5;
 ```
 
-# 2.Automatic
+### 2.Automatic
 Sono le variabili dentro una funzione, e hanno una vita limitata all'uso della funzione
 
-# 3.External
+### 3.External
 
