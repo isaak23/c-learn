@@ -133,9 +133,54 @@ per le global non c'è bisogno di dichiararlo esplicitamente mentre dentro una f
 ```bash
 static int x = 5;
 ```
+Posso dichiarare anche una funzione static, in questo caso la funzione dichiarata static è visibile solo nel file in cui è dichiarata, quella funzione non potrà essere visibile ad altri file se non tramite un'altra funzione
 
-### 2.Automatic
+```bash
+altroFile.c
+int x;
+
+//funzione visibile anche ad altri file
+int foo(x) {
+  bar(x);
+}
+//funzione visibile solo a questo file
+static int bar(x){...}
+```
+
+
+### 2. Automatic
 Sono le variabili dentro una funzione, e hanno una vita limitata all'uso della funzione
 
-### 3.External
+### 3. External
+Si tratta di variabili dichiarate in un altro file ma inizializzate nel fle dove sto lavorando. Ovviamente nell'altro file la mia variabile è dichiarata a livello globale
 
+Es.
+
+```bash
+main.c
+extern int variabileEsterna = 5;
+```
+
+```bash
+altrofile.c
+int variabileEsterna;
+```
+
+### Array
+Per dichiarare un array
+
+```bash
+type array[size];
+```
+Posso omettere la dimensione se dichiaro anche il contenuto dell'array, in genere i compilatori se ne accorgono
+```bash
+int array[] = {5,3,6,9,2};
+```
+Posso anche dichiarare degli array multidimensionale utili per matrici o altro
+```bash
+type array[size1][size2]
+```
+Bisogna ricordarsi sempre che un array di caratteri, ovvero una stringa, l'ultimo elemento è "/0" quindi "ciao" sarà un array di 5 elementi dove l'ultimo è "/0".
+Altro elemento di attenzione è che il C non supporta direttamente le stringhe, ma solo come array di char
+
+### Puntatori
