@@ -204,3 +204,6 @@ y = *p[0]
 
 # Advanced C
 
+## Structures
+## Unions
+
