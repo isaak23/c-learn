@@ -184,3 +184,23 @@ Bisogna ricordarsi sempre che un array di caratteri, ovvero una stringa, l'ultim
 Altro elemento di attenzione è che il C non supporta direttamente le stringhe, ma solo come array di char
 
 ### Puntatori
+
+Per i puntatori rimando al README principale, ricordo solo che un array è già automaticamente un puntantore al primo elemento dell'array, quindi in caso volessi associare un array ad un altro puntaotre mi basterebbe fare
+
+```bash
+int x[] = {1,2,3,4}
+p = x // questo a volte è ingannevole, fa pensare solo ad una variabile
+p = &x // almeno questo ti fa capire che un puntatore
+p = &x[0] // questo è ancora più esplicito
+```
+
+incrementando il puntatore posso scorrere gli elementi dell'array.
+
+Se voglio deferenziare un array devo specificare il primo elemento, in questo modo
+
+```bash
+y = *p[0]
+```
+
+# Advanced C
+
