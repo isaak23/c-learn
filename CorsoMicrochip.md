@@ -205,5 +205,61 @@ y = *p[0]
 # Advanced C
 
 ## Structures
-## Unions
+Una struttura può contenere ogni tipo di dato, facciamo subito un esempio
 
+```bash
+struct complex {
+  float re; //parte reale del numero complesso
+  float im; //parte immaginaria
+} x,y; //ho dicharato due variabili x e y di tipo complex
+```
+posso anche dichiararle così
+```bash
+struct complex {
+  float re; //parte reale del numero complesso
+  float im; //parte immaginaria
+};
+
+struct complex x,y;
+```
+
+Posso accedere ai campi della struct con la . notation
+
+```bash
+struct complex {
+  float re; //parte reale del numero complesso
+  float im; //parte immaginaria
+} x,y; //ho dicharato due variabili x e y di tipo complex
+
+int main(void)  {
+  x.re = 1.25;
+  x.im = 2.52;
+  y = x // assegno alla struttura y i valori della struttura x
+  return 0;
+}
+```
+Posso creare un tipo direttamente con la struttura con typedef, così è più rapido
+```bash
+typdef struct{
+  float re;
+  float im;
+} complex
+
+complex x = {1.25,2.50}; //così facendo ho anche assegnato già valori a re e im della struttura
+complex y;
+```
+
+Molto utile creare struct di bit fields, posso assegnare il numero di bit ad ogni campo che mi interessa
+
+```bash
+typedef struct{
+  int bit1: 1; // ho un solo bit quindi 1
+  int bit2to4: 3; // qui mi servono 3 bit, i bit 2,3 e 4 quindi metto 3 bit
+  int bit5: 1;
+  int bit6to8: 3; // altri 3 bit quindi il massimo numero che posso dare è 7 (da 0 a 7 con 3 bits)
+} byteBits;
+```
+
+## Unions
+Le Unions sono come le struct con la differenza che gli elementi della union condividono lo stesso spazio di memoria e la memoria della union coincide ovviamente con l'elemento più grande. 
+Le union tornano comode se ho valori che arrivano da diversi registri o input e poi li devo concatenare
