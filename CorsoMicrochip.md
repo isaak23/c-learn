@@ -263,3 +263,7 @@ typedef struct{
 ## Unions
 Le Unions sono come le struct con la differenza che gli elementi della union condividono lo stesso spazio di memoria e la memoria della union coincide ovviamente con l'elemento più grande. 
 Le union tornano comode se ho valori che arrivano da diversi registri o input e poi li devo concatenare
+
+## Puntatori a Struct e Union
+Posso anche dichiarare puntatori a struct e union, per memorizzre un valore dentro una struct posso usare l'operatore -> mentre per accedere posso usare sempre il punto.
+Es.
