@@ -308,3 +308,10 @@ int main(int argc, char** argv) {
   return 0;
 }
 ```
+Posso anche creare strutture dentro strutture, ma in quel caso devo dichiarare le strutture interne alla struttura madre come volatile.
+
+Ricordiamo che quando dichiaro un puntatore tutto quello a sinistra dell'asterisco * indica il tipo di dato indicato dal puntatore e tutto quello a destra dell'asterisco * è riferito al puntatore stesso.
+
+Altra cosa importante è che a volte alcuni aspetti dipendono dal compilatore usato, ad esempio un compilatore potrebbe salvare di defaul le stringhe in flash invece che in RAM.
+
+## Array di puntatori
