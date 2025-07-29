@@ -267,3 +267,44 @@ Le union tornano comode se ho valori che arrivano da diversi registri o input e 
 ## Puntatori a Struct e Union
 Posso anche dichiarare puntatori a struct e union, per memorizzre un valore dentro una struct posso usare l'operatore -> mentre per accedere posso usare sempre il punto.
 Es.
+
+```bash
+#include <stdio.h>
+
+//definisco la struttura
+typedef union {
+  unsigned long longVariable;
+  struct {
+    unsigned char var1;
+    unsigned char var2;
+    unsigned char bitvar: 2;
+    unsigned char var3;
+  } member;
+} NEW_TYPE;
+
+//dichiaro una variabile del tipo dichiarato sopra
+NEW_TYPE newType;
+
+//dichiaro un puntatore alla struttura
+NEW_TYPE *pnewType = &newType;
+
+
+int main(int argc, char** argv) {
+  
+    pnewType->longVariable = 0xABCDECFF; // in questo modo assegno alla variabile puntata dal puntatore un valore, devo conoscere la struttura
+
+  printf("dentro longvariable trovo: %lu \n",newType.longVariable); // in decimale
+  printf("dentro var trovo: %d \n",newType.member.var1); // in decimale
+  printf("dentro var trovo: %d \n",newType.member.var2); // in decimale
+  printf("dentro var trovo: %d \n",newType.member.bitvar); // in decimale
+  printf("dentro var trovo: %d \n",newType.member.var3); // in decimale
+  printf("\n");
+
+  printf("dentro longvariable trovo: %lx \n",newType.longVariable); // in esadecimale
+  printf("dentro var trovo: %x \n",newType.member.var1); // in esadecimale
+  printf("dentro var trovo: %x \n",newType.member.var2); // in esadecimale
+  printf("dentro var trovo: %b \n",newType.member.bitvar); // in esadecimale, prendo solo i primi due bit di cd che convertito in binaro è appunto 11001101 quindi ha preso l'ultimo 1, io nella variabile ho messo solo due bit, se metto FF al posto di CD leggerò qui 11 e sopra 3 in decimale
+  printf("dentro var trovo: %x \n",newType.member.var3); // in decimale
+  return 0;
+}
+```
