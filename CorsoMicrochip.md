@@ -315,3 +315,96 @@ Ricordiamo che quando dichiaro un puntatore tutto quello a sinistra dell'asteris
 Altra cosa importante è che a volte alcuni aspetti dipendono dal compilatore usato, ad esempio un compilatore potrebbe salvare di defaul le stringhe in flash invece che in RAM.
 
 ## Array di puntatori
+
+Se scrivo questo:
+```bash
+char *const p[4] = {"a01", "b02", "c03", "d04"};
+```
+ho creato dei puntatori costanti (cioè gli indirizzi memorizzati nei puntatori sono salvati in flash) con il loro contenuto che è potenzialmente modificabile (ma attenzione sono in flash).
+
+Se scrivo:
+```bash
+const char *q[4] = {"e01", "f02", "g03", "h04"};
+```
+Ho creato dei puntatori modificabili (cioè gli indirizzi salvati nei puntatori sono modificabili e salvati in RAM) mentre il loro contenuto sono costanti e salvati in flash, non sono modificabili.
+
+Per vedere cosa contengono gli array è possibile fare questi cicli for
+```bash
+#include <stdio.h>
+
+unsigned char i = 0, j = 0, y;
+char *const p[4] = {"a01", "b02", "c03", "d04"};
+const char *q[4] = {"e01", "f02", "g03", "h04"};
+
+
+int main(int argc, char **argv) {
+  //Step through p[ ] pointer       
+        for(i = 0; i < 4; i++, j=0)
+        {
+           do{
+               y = *(p[i] + j);
+             printf("%c\n",y);
+               j++;
+           } while(y != '\0'); //esco da questo while quando incontro lo /0 di fine array, quindi la j mi server per andare avanti nella stringa presente in ogni elemento dell'array, se incontro /0 esco dal while e il for può passare a i=1 e rimettendo j=0 in modo tale da scandire la seconda stringa
+        }
+
+  //Step through q[ ] pointer      
+        for(i = 0; i < 4; i++, j=0)
+        {
+           do{
+               y = *(q[i] + j);
+                printf("%c\n",y);
+               j++;
+           } while(y != '\0');
+        }
+}
+```
+
+## Array di struct e union
+
+Posso mettere in un array anche struc e union, facciamo un esempio
+
+```bash
+#include <stdio.h>
+
+typedef struct {
+  float re;
+  float im;
+} complex;
+
+complex a[3] ={{2.5,3},{4,1.5},{2,4.6}};
+```
+Per accedere agli elementi uso la solita dot notation
+
+```bash
+a[0].re = 1.4;
+```
+Ovviamente posso anche creare dei puntatori a queste strutture
+```bash
+typedef struct {
+  float re;
+  float im;
+} complex;
+complex a[2]; //dichiaro l'array
+complex *p_a[2] = {&a[0],&a[1]}; //referenzio gli elementi nel puntatore
+complex *singlePointer_a = &a[0]; //posso anche passare solo il primo elemento, ma poi devo ricordarmi di incrementare il valore del puntatore con ++ per accedere agli altri elementi, visto che non ho l'indice
+```
+Se volessi scrivere una funzione che prende in argomento questo puntatore e che magari gli assegna dei valori posso fare così
+
+```bash
+int functionName(complex *p_struct[]) {
+  unsigned char j;
+  for(j=0,j<2,j++) {
+    p_struct[j]->re = 1.25;
+    p_struct[j]->im = 2.50;
+  }
+}
+```
+Per chiamare la funzione posso fare:
+```bash
+functionName(&a[0]); //passo direttamente l'indirizzo dell'elemento dell'array
+functionName(p_a[0]); //passo il puntatore con l'indice
+functionName(singlePointer_a); //passo il single pointer, poi però per passare all'elemento dopo devo fare singlePointer_a++
+```
+
+## Function Pointers
