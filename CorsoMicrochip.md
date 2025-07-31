@@ -408,3 +408,31 @@ functionName(singlePointer_a); //passo il single pointer, poi però per passare 
 ```
 
 ## Function Pointers
+I puntatori possono essere usati anche per puntare funzioni
+la dichiaro così:
+
+```bash
+int (*fp)(int x);
+```
+ho dichiarato un puntaotre a funzione di nome fp, i puntatori a funzione possono restituire un solo valore ma possono avere più argomenti.
+
+```bash
+int (*fp)(int x); //dichiaro il puntatore
+int foo(int x); // dichiaro la funzione
+fp = &foo; // assegno la funzione al puntatore
+```
+Ecco un esempio concreto
+```bash
+int x,y;
+int add(int a, int b);
+int sub(int a, int b);
+
+int foobar(int a, int b, int (*fp)(int,int)) {
+return fp(a,b);
+}
+
+void main(void) {
+  x = foobar(5,12,&add);
+  y = foobar(5,12,&sub);
+}
+```
