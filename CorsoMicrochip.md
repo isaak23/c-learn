@@ -421,7 +421,7 @@ int (*fp)(int x); //dichiaro il puntatore
 int foo(int x); // dichiaro la funzione
 fp = &foo; // assegno la funzione al puntatore
 ```
-Ecco un esempio concreto
+Ecco un esempio concreto:
 ```bash
 int x,y;
 int add(int a, int b);
@@ -436,3 +436,21 @@ void main(void) {
   y = foobar(5,12,&sub);
 }
 ```
+Ovviamente posso anche fare array di function pointers:
+```bash
+int  (*funPtr[3])(int a) {&function1,&function2,&function3}; //se voglio mettere tutto in RAM
+int  (*const funPtr[3])(int a) {&function1,&function2,&function3}; //se voglio mettere tutto in FLASH
+```
+
+## State Machines
+Prima di parlare di macchine a stati ricoridamo le enum:
+```bash
+//primo modo
+enum typename {label0,label1,...,labelN} varname1, varname2 ;
+enum weekday {monday, tuesday, wednesday, thursday, friday, saturnday, sunday}
+
+//con typedef, sicuramente più comodo
+typedef enum {monday, tuesday, wednesday, thursday, friday, saturnday, sunday} weekday;
+weekday day;
+```
+nell'esempio monday sarà 0, tuesday 1 e così via.
