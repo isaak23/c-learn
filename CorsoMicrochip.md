@@ -728,3 +728,20 @@ void string_access(const char **message_pointer)
     } while(y != '\0');
 }
 ```
+## Linked list
+Le linked list sono nodi collegati da link, 3 tipi di linked list sono:
+
+1. Simple linked list
+2. Doubly linked list
+3. Circular linked list
+
+Ecco una semplice linked list:
+
+```bash
+struct Node {
+  int data; // i dati contenuti nel nodo
+  struct Node* next; //il puntatore al prossimo nodo
+}
+```
+Il puntatore dell'ultimo nodo punta a NULL.
+Nei doubly linked list ogni nodo ha due puntatori, uno al prossimo nodo e uno al precedente, il primo e l'ultimo nodo (non avendo nodo precedente e successivo) avranno un puntatore a NULL oltre a quello del nodo adiacente. La circular è come la doubly solo che il primo nodo punta anche all'ultimo e l'ultimo al primo (oltre che al nodo adiacente)
