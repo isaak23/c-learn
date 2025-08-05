@@ -454,3 +454,277 @@ typedef enum {monday, tuesday, wednesday, thursday, friday, saturnday, sunday} w
 weekday day;
 ```
 nell'esempio monday sarà 0, tuesday 1 e così via.
+
+Le macchine a stati si possono realizzare con gli switch case oppure con i puntatori a funzione, questa seconda opzione è più flessibile, ecco un esempio:
+
+```bash
+
+//creo una enum per tenere traccia degli stati
+typedef enum
+{
+    STATE0 = 0,
+    STATE1,
+    STATE2
+} SYSTEM_STATE;
+
+SYSTEM_STATE gSystemState;
+
+//creo le 3 funzioni per i 3 stati, verranno usate tramite putatori
+unsigned int function1(unsigned int InputBits, SYSTEM_STATE *State)
+{
+   (*State)++;
+
+   if(InputBits == 0 && *State > 1)
+      return InputBits;
+   else
+      return 99;
+}
+
+unsigned int function2(unsigned int InputBits, SYSTEM_STATE *State)
+{
+   (*State)++;
+
+   if(InputBits == 2 && *State > 1)
+      return InputBits * InputBits;
+   else
+      return 88;
+}
+
+
+unsigned int function3(unsigned int InputBits, SYSTEM_STATE *State)
+{
+   (*State)++;
+
+   if(InputBits == 0 && *State > 1)
+      return InputBits * InputBits * InputBits;
+   else
+      return 77;
+}
+
+//creo un array i cui elementi sono le tre funzioni
+unsigned int ( * pStateFunction[] ) ( unsigned int InputBits, SYSTEM_STATE *State ) =
+{
+    function1,
+    function2,
+    function3
+};
+
+//questa è la funzione invocata dal main per far giare la macchina a stati
+unsigned int RunStateMachine( unsigned int InputBits )
+{
+    return (*pStateFunction[ gSystemState ])( InputBits, &gSystemState );
+}
+
+//questo è il main
+void main(void)
+{
+   volatile unsigned int result1;
+   volatile unsigned int result2;
+   volatile unsigned int result3;
+
+   
+   while(1)
+   {
+       gSystemState = STATE0;
+       result1 = RunStateMachine( 1 );
+
+//gSystemState should be incremented by function
+       result2 = RunStateMachine( 2 );
+
+//gSystemState should be incremented by function
+       result3 = RunStateMachine( 3 );
+   }
+}
+
+```
+
+## Code portability
+Se voglio che il mio codoce sia portabile il più possibile, è meglio seguire alcune accortezze:
+1. Puntatori a funzione sono definite dentro le strutture
+2. Un array di puntatori a funzioni chiama le funzioni
+3. Enum e struct sono usate per creare gli stessi puntatori a funzioni a Ram, periferiche ecc.
+
+Esempio:
+
+```bash
+//Variable declarations
+unsigned short u16buffer1[16];
+unsigned short u16buffer2[16];
+unsigned short u16dataBufferRead;
+
+
+//Two 16-bit buffers will be accessed.  The names are BUFFER1 and BUFFER2.  There
+// are three functions for each buffer.  The _Initialize function will load 16
+// values into the buffer.  All values are the same and are defined by u16bufferFill.
+// The second function will read one location of the buffer.  The third function will 
+// write one location of the buffer.
+
+//Write 16 integer values to BUFFER1 as defined by u16bufferFill
+void BUFFER1_Initialize(unsigned short u16bufferFill)
+{
+   unsigned char i;
+   
+   for(i = 0; i <= 15; i++)
+   {
+      u16buffer1[i] = u16bufferFill;
+   }   
+} 
+
+
+//Read one 16-bit value from BUFFER1 at the address specified by u8index
+unsigned short BUFFER1_Read(unsigned char u8index)
+{
+   return u16buffer1[u8index];
+}   
+
+
+//Write one 16-bit value to BUFFER1 at the address specified by u8index
+void BUFFER1_Write(unsigned char u8index, unsigned short u16value)
+{
+   u16buffer1[u8index] = u16value;
+}   
+
+
+//Write 16 integer values to BUFFER2 as defined by u16bufferFill
+void BUFFER2_Initialize(unsigned short u16bufferFill)
+{
+   unsigned char i;
+   
+   for(i = 0; i <= 15; i++)
+   {
+      u16buffer2[i] = u16bufferFill;
+   }   
+} 
+
+
+//Read one 16-bit value from BUFFER2 at the address specified by u8index
+unsigned short BUFFER2_Read(unsigned char u8index)
+{
+   return u16buffer2[u8index];
+}   
+
+
+//Write one 16-bit value to BUFFER2 at the address specified by u8index
+void BUFFER2_Write(unsigned char u8index, unsigned short u16value)
+{
+   u16buffer2[u8index] = u16value;
+}   
+
+
+
+//Enumeration for two different buffers.  This enumeration will be used to select 
+// which buffer to access
+enum { BUFFER1, BUFFER2} buffer_configurations_t;
+
+
+//Create three function pointers within a typedef structure.  These three function pointers
+// will initialize, read, and write the two buffers.  The *DataInit pointer performs
+// the buffer initialization.  The *DataWrite pointer writes to the buffer.  The *DataRead
+// pointer reads the buffer.
+typedef struct { 
+   void (*DataInit)(unsigned short bufferFill); 
+   void (*DataWrite)(unsigned char index, unsigned short value); 
+   unsigned short (*DataRead)(unsigned char index);
+} buffer_functions_t;
+
+
+//The buffer_access[ ] array contains the addresses for both of the buffer
+// initialize, read and write functions.  This array is placed in flash but could
+// be placed in RAM instead.  
+
+// Line 1 accesses BUFFER1 and line 2 accesses BUFFER2.
+// Each line has the addresses for each function (initialize, read, write).
+
+//The BUFFER1_Initialize address corresponds to the *DataInit function pointer.
+//The BUFFER1_WRITE address corresponds to the *DataWrite function pointer.
+//The BUFFER1_READ address corresponds to the *DataRead function pointer.
+const buffer_functions_t buffer_access[] = {   
+    {BUFFER1_Initialize, BUFFER1_Write, BUFFER1_Read },
+    {BUFFER2_Initialize, BUFFER2_Write, BUFFER2_Read }
+};
+
+
+
+//Main function
+int main(void)
+{
+//Initialize both buffers    
+   buffer_access[BUFFER1].DataInit(0x55);
+   buffer_access[BUFFER2].DataInit(0xAA);
+
+    while(1)
+    {
+//Access the functions for each buffer using the buffer_access[ ] array        
+       buffer_access[BUFFER1].DataWrite(4, 0x1234);
+       u16dataBufferRead = buffer_access[BUFFER1].DataRead(4);
+       
+       buffer_access[BUFFER2].DataWrite(8, 0x9876);
+       u16dataBufferRead = buffer_access[BUFFER2].DataRead(8);
+       
+       while(1);
+
+    }
+}
+```
+## Double Pointers
+Supponiamo di voler passare un puntatore di una variabile a una funzione, cosa succede se abbiamo un array di punyatori e volgiamo passare un punyatore all'array di puntatori a una funzione? Possiamo usare i puntatori a puntatori.
+
+Esempio:
+
+```bash
+//Create an array of pointers and initialize 4 different strings.  These strings are programmed
+// into flash during programming because the 'const' keyword is used to make the pointers point
+// to flash memory.  Also, create some generic variables used for the loops.
+const char *p[4] = {"ALARM", "FAULT", "SENSOR", "UNLOCK"};
+const char **pp = &p[0];
+unsigned char y;
+
+
+//Function prototype
+void string_access(const char **message_pointer);
+
+
+int main(int argc, char** argv) 
+{
+    
+//Step through the following code and watch the 'y' variable.  This code will separately access each
+// string in the array.  This code will pass the pointer address to the strings to the function.  It will 
+// increment the double pointer to point to the next string.  This method demonstrates how to pass the 
+// pointer to the function.    
+   while(1)
+   {
+//Access "ALARM"       
+       pp = &p[0];
+       string_access(&*pp);
+
+//Access "FAULT"
+       pp++;
+       string_access(&*pp);
+
+//Access "SENSOR"       
+       pp++;
+       string_access(&*pp);
+
+//Access "UNLOCK"       
+       pp++;
+       string_access(&*pp);
+
+      while(1);
+   }
+}
+
+
+//This function receives the address of the array pointer to the text strings.  The
+// double pointer allows us to pass the address of pointers to functions.  The function
+// will access each character in the string until the NULL character is reached.
+void string_access(const char **message_pointer)
+{
+    unsigned char i;
+    
+    i = 0;
+    do{
+        y = *(*message_pointer + i);
+        i++;
+    } while(y != '\0');
+}
+```
