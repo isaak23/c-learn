@@ -744,4 +744,31 @@ struct Node {
 }
 ```
 Il puntatore dell'ultimo nodo punta a NULL.
-Nei doubly linked list ogni nodo ha due puntatori, uno al prossimo nodo e uno al precedente, il primo e l'ultimo nodo (non avendo nodo precedente e successivo) avranno un puntatore a NULL oltre a quello del nodo adiacente. La circular è come la doubly solo che il primo nodo punta anche all'ultimo e l'ultimo al primo (oltre che al nodo adiacente)
+Nei doubly linked list ogni nodo ha due puntatori, uno al prossimo nodo e uno al precedente, il primo e l'ultimo nodo (non avendo nodo precedente e successivo) avranno un puntatore a NULL oltre a quello del nodo adiacente. La circular è come la doubly solo che il primo nodo punta anche all'ultimo e l'ultimo al primo (oltre che al nodo adiacente).
+
+### Allocazione dinamica della memoria
+Heap: è un'area di memoria pre riservata che un processo di un programma può usare per immagazzinare dati in una certa quantità che non è possibile conoscere finche il programma non gira.
+Posso allocare memoria con la malloc
+
+```bash
+*malloc(size_t size); // alloca la memoria richiesta e restituisce un puntatore ad essa, la memoria è espressa in byte
+
+newNode = (struct Node*)malloc(sizeof(struct Node)); // sto allocando memoria dinamicamente della dimensione di Node e chiamando il puntatore a quella locazione di memoria newNode
+
+free(newNode); //per libearare la memoria devo usare free
+```
+
+Creaiamo una linked list, prima il la struttura del nodo e poi i puntatori
+
+```bash
+struct Node {
+  int val;
+  struct Node *nextPtr;
+};
+
+struct Node *currentPointer;
+struct Node *previousPointer;
+
+struct Node* headNode = NULL; //iniziamo con il puntatore del primo elemento
+headNode = (struct Node*)malloc(sizeof(struct Node)); //allochiamo la memnoria per il primo elemento e salviamolo come valore "head"
+
