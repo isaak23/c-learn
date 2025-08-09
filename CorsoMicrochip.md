@@ -1156,3 +1156,16 @@ void main(void)
 }
 
 ```
+
+### File Header
+Per evitare che un file header venga incluso più volte oppure che ci siano duplicati è buona prassi usare la seguente accortezza
+
+header.h
+```bash
+#ifndef HEADER_H
+#define HEADER_H
+//code...
+#endif
+```
+
+### Floating point operation without FPU 
