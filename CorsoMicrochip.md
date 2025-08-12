@@ -1169,3 +1169,57 @@ header.h
 ```
 
 ### Floating point operation without FPU 
+Supponiamo di di avere un ADC con una risoluzione di 10 bit. Vogliamo dividere questo valore con un valore di comparazione e valutare questa comparazione con un valore didecimale tra 0 e 1
+
+```bash
+result = (float)adcReading/compareValue //se il risultato è maggiore di un certo valore, fai qualcosa
+```
+Analizziamo questo Frammento di codice:
+```bash
+#define TRIP_POINT 0.49
+
+volatile uint16_t adcReading= 477;
+volatile uint16_t compareValue = 892
+volatile uint8_t = 0;
+
+int main(void) {
+  if(((float)adcReading/compareValue) > TRIP_POINT) {
+    u8flag = 10;
+  }
+while(1)
+}
+```
+
+Questo codice su un mcu senza FPU hardware risulta di 855 istruzioni, 60 data bytes, ora vediamo quest'altro codice
+
+```bash
+#define TRIP_POINT 49
+
+volatile uint16_t adcReading= 477;
+volatile uint16_t compareValue = 892
+volatile uint8_t = 0;
+
+int main(void) {
+  if(((uint32_t)adcReading*100) >
+    ((uint32_t)compareValue * TRIP_POINT)
+   {
+    u8flag = 10;
+   }
+while(1)
+}
+```
+Questo codice su un mcu senza FPU hardware risulta di 155 istruzioni e 23 data bytes, quindi molto meglio
+
+Il trucco sta nell'aver normalizzato il trip point ad un numero intero, infatti non ho più 0.49 come trip point ma 49, di conseguenza devo normalizzare anche gli altri valori, ho castato a uint32_t perché la moltiplicaizone ovviamente mi da un numero più grande e 16 bit non mi bastavano più per contenerlo, questo aumento di bit che sembra peggiorativo invece aiuta la mia unità di calcolo che non deve avere più a che fare con i numeri float. Sarebbe stato anchra megli se avessi moltiplicato tutto per 256 (8 bit) in questo modo avrei risparmiato altre istruzioni.
+
+### Inizializzare Union e Struct
+
+Posso inizializzzare union e struct con la dot notation
+
+```bash
+typedef struct {
+  int member1;
+  int member2;
+}demoStruct;
+
+demoStruct test = {.member1=34, .member2=67};
