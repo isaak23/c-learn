@@ -43,5 +43,6 @@ void main(void) {
   callback_execution(functionPointer);
 }
 }
-
 ```
+### Callbacks e interrupt
+Posso usare le callback anche dentro le ISR ma devo fare attenzione che la la callback duri meno del tempo di interrupt
