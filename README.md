@@ -2,6 +2,61 @@
 
 Per questo corso userò linux e vi come IDE, in maniera molto old school 
 
+## Appunti VIM
+### Comandi base
+:w	Salva il file (Write).
+:q	Esci da Vim (Quit). Fallisce se ci sono modifiche non salvate.
+:wq	Salva ed Esci (Write and Quit). Equivalente a :x.
+:q!	Esci senza salvare (Quit forcefully). Ignora le modifiche non salvate.
+:set nu	Attiva la numerazione delle righe.
+:set nonu	Disattiva la numerazione delle righe.
+:help parola_chiave	Apre il manuale di Vim per la parola chiave specificata.
+
+### Modalità inserimento
+i	Entra in Modalità Inserimento prima del cursore.
+a	Entra in Modalità Inserimento dopo il cursore (Append).
+o	Apre una nuova riga sotto quella corrente e va in Modalità Inserimento.
+I	Entra in Modalità Inserimento all'inizio della riga.
+A	Entra in Modalità Inserimento alla fine della riga.
+O	Apre una nuova riga sopra quella corrente e va in Modalità Inserimento.
+
+### Movimento del cursore
+h	Sposta il cursore a sinistra.
+j	Sposta il cursore in basso (riga successiva).
+k	Sposta il cursore in alto (riga precedente).
+l	Sposta il cursore a destra.
+w	Salta all'inizio della prossima parola.
+b	Salta all'inizio della parola precedente (Back).
+e	Salta alla fine della parola corrente.
+0 (zero)	Sposta il cursore all'inizio della riga.
+$	Sposta il cursore alla fine della riga.
+gg	Sposta il cursore alla prima riga del file.
+G	Sposta il cursore all'ultima riga del file.
+:n	Salta alla riga con il numero n (es. :50 per la riga 50).
+
+### Modifica e cancellazione
+u	Annulla l'ultima azione (Undo).
+Ctrl + r	Ripristina l'azione annullata (Redo).
+x	Cancella il carattere sotto il cursore.
+dd	Cancella (taglia) l'intera riga.
+dw	Cancella la parola (Delete Word).
+D	Cancella dal cursore fino alla fine della riga.
+yy	Copia (yank) l'intera riga.
+yw	Copia la parola (Yank Word).
+p	Incolla il testo dopo il cursore o la riga (Paste).
+P	Incolla il testo prima del cursore o la riga.
+r	Sostituisce un singolo carattere.
+J	Unisci la riga corrente con quella successiva.
+
+### Ricerca e sostituzione
+/pattern	Cerca la stringa "pattern" in avanti.
+?pattern	Cerca la stringa "pattern" all'indietro.
+n	Ripete la ricerca nella stessa direzione.
+N	Ripete la ricerca nella direzione opposta.
+:%s/vecchio/nuovo/g	Sostituisce tutte le occorrenze di "vecchio" con "nuovo" in tutto il file (Globalmente).
+:s/vecchio/nuovo/g	Sostituisce tutte le occorrenze solo sulla riga corrente.
+:%s/vecchio/nuovo/gc	Sostituisce in tutto il file, ma chiede conferma per ogni occorrenza.
+
 ## Lesson 1
 
 Per prima cosa devo installare il compilatore sulla macchina, per farlo eseguo il comando:
